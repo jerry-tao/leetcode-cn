@@ -7,16 +7,20 @@
  * }
  */
 func postorderTraversal(root *TreeNode) []int {
-
+    if root==nil{return nil}
+    stack:=[]*TreeNode{root}
     res:=[]int{}
-    if root==nil{
-        return res
+    var tmp *TreeNode
+    for len(stack)!=0{
+        root = stack[len(stack)-1]
+        if (root.Left == nil && root.Right==nil) || (tmp!=nil && (root.Left==tmp||root.Right==tmp)) {
+            res = append(res, root.Val)
+            stack = stack[:len(stack)-1]
+            tmp = root
+        }else{
+            if root.Right!=nil{stack=append(stack,root.Right)}
+            if root.Left!=nil{stack = append(stack,root.Left)}
+        }
     }
-    return pt(root,res)
-}
-func pt(node *TreeNode,res []int)[]int{
-    if node.Left!=nil{res = pt(node.Left,res)}
-    if node.Right!=nil{res = pt(node.Right,res)}
-    res = append(res,node.Val)
     return res
 }
